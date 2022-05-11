@@ -48,7 +48,7 @@ public class QueueByArray implements Queue {
     }
 
     public Object get(int i) {
-        if (i <= 0 || i > count) throw new QueueIndexOutOfBoundsException(i);
+        if (count == 0 || i < 0 || i > count) throw new QueueIndexOutOfBoundsException(i);
         return elements[i];
     }
 

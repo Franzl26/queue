@@ -2,40 +2,37 @@ package edu.unibw.se.hp.queue;
 
 import org.junit.jupiter.api.*;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("QueueTest")
-public abstract class QueueTest {
+abstract class QueueTest {
     private Queue queue = null;
 
-    public abstract Queue createQueue();
+    abstract Queue createQueue();
 
     @BeforeEach
-    public void beforeEachTest() {
+    void beforeEachTest() {
         queue = createQueue();
     }
 
     @Test
-    public void newQueueEmpty() {
+    void newQueueEmptySize0() {
         assertTrue(queue.isEmpty());
-    }
-
-    @Test
-    public void newQueueSize0() {
         assertEquals(0, queue.size());
     }
 
     @Test
-    public void emptyQueueException() {
+    void emptyQueueException() {
         assertThrows(EmptyQueueException.class, () -> queue.first());
         assertThrows(EmptyQueueException.class, () -> queue.dequeue());
 
     }
 
     @Test
-    public void queueIndexOutOfBoundsException() {
+    void queueIndexOutOfBoundsException() {
         assertThrows(QueueIndexOutOfBoundsException.class, () -> queue.get(0));
         queue.insert(5);
         assertThrows(QueueIndexOutOfBoundsException.class, () -> queue.get(-1));
@@ -43,7 +40,7 @@ public abstract class QueueTest {
     }
 
     @Test
-    public void queueInsert144() {
+    void queueInsert144() {
         queue.insert(144);
         assertFalse(queue.isEmpty());
         assertEquals(1, queue.size());
@@ -53,7 +50,7 @@ public abstract class QueueTest {
     }
 
     @Test
-    public void queueInsertNull() {
+    void queueInsertNull() {
         queue.insert(null);
         assertFalse(queue.isEmpty());
         assertEquals(1, queue.size());
@@ -63,99 +60,63 @@ public abstract class QueueTest {
     }
 
     @Test
-    public void queueInsertMultiple1() {
-        queue.insert(144);
-        assertFalse(queue.isEmpty());
-        assertEquals(1, queue.size());
-        assertTrue(queue.contains(144));
-        assertEquals(144, queue.first());
-        assertEquals(144, queue.get(0));
+    void queueInsertMultiple1() {
+        Object[] arr = {144, null, "HP", -145, 4.5};
+        for (int i = 0; i < arr.length; i++) {
+            if (i % 2 == 0) queue.insert(arr[i]);
+            else queue.enqueue(arr[i]);
 
-        queue.enqueue(null);
-        assertFalse(queue.isEmpty());
-        assertEquals(2, queue.size());
-        assertTrue(queue.contains(null));
-        assertEquals(144, queue.first());
-        assertEquals(null, queue.get(1));
-
-        queue.insert("HP");
-        assertFalse(queue.isEmpty());
-        assertEquals(3, queue.size());
-        assertTrue(queue.contains(144));
-        assertEquals(144, queue.first());
-        assertEquals("HP", queue.get(2));
-
-        queue.enqueue(-145);
-        assertFalse(queue.isEmpty());
-        assertEquals(4, queue.size());
-        assertTrue(queue.contains(144));
-        assertEquals(144, queue.first());
-        assertEquals(-145, queue.get(3));
-
-        queue.insert(4.5);
-        assertFalse(queue.isEmpty());
-        assertEquals(5, queue.size());
-        assertTrue(queue.contains(144));
-        assertEquals(144, queue.first());
-        assertEquals(4.5, queue.get(4));
+            assertFalse(queue.isEmpty());
+            assertEquals(i + 1, queue.size());
+            assertTrue(queue.contains(arr[i]));
+            assertEquals(arr[0], queue.first());
+            assertEquals(arr[i], queue.get(i));
+        }
     }
 
     @Test
-    public void queueClear() {
-        queue.insert("hi");
+    void queueClear() {
+        /*queue.insert("hi");
         queue.insert(null);
-        queue.insert(45);
+        queue.insert(45);*/
+
+        Object[] arr = {144, null, "HP", -145, 4.5};
+        Arrays.stream(arr).forEach(o -> queue.insert(o));
+
         queue.clear();
         assertTrue(queue.isEmpty());
         assertEquals(0, queue.size());
     }
 
     @Test
-    public void queueInsertMany() {
-        for (int i = 0; i < 100; i++) {
+    void queueInsertMany() {
+        int count = 100;
+        for (int i = 0; i < count; i++) {
             queue.enqueue(i);
         }
-        for (int i = 0; i < 100; i++) {
-            assertEquals(100 - i, queue.size());
+        for (int i = 0; i < count; i++) {
+            assertEquals(count - i, queue.size());
             assertEquals(i, queue.dequeue());
-            assertEquals(100 - i - 1, queue.size());
+            assertEquals(count - i - 1, queue.size());
         }
     }
 
     @Test
-    public void queueRemove() {
-        queue.insert(144);
-        queue.insert(null);
-        queue.insert("HP");
-        queue.insert(-145);
-        queue.enqueue(4.5);
-        queue.enqueue(144);
-        queue.enqueue(4.5);
-        queue.enqueue(null);
+    void queueRemove() {
+        Object[] arr = {144, null, "HP", -145, 4.5, 144, 4.5, null};
+        Object[] rem = {"HP", 144, 4.5, null, -145};
+        int[] size = {7, 5, 3, 1, 0};
 
-        queue.remove("HP");
-        assertFalse(queue.contains("HP"));
-        assertEquals(7, queue.size());
-
-        queue.remove(144);
-        assertFalse(queue.contains(144));
-        assertEquals(5, queue.size());
-
-        queue.remove(4.5);
-        assertFalse(queue.contains(4.5));
-        assertEquals(3, queue.size());
-
-        queue.remove(null);
-        assertFalse(queue.contains(null));
-        assertEquals(1, queue.size());
-
-        queue.remove(-145);
-        assertFalse(queue.contains(-145));
-        assertEquals(0, queue.size());
+        for (Object o : arr) queue.insert(o);
+        for (int i = 0; i < rem.length; i++) {
+            queue.remove(rem[i]);
+            assertFalse(queue.contains(rem[i]));
+            assertEquals(size[i], queue.size());
+        }
     }
 
     @Test
-    public void queueRemove2() {
+    void queueRemove2() {
         queue.insert(4);
         queue.insert(4);
         queue.insert(40);
@@ -181,7 +142,7 @@ public abstract class QueueTest {
     }
 
     @Test
-    public void queueToString() {
+    void queueToString() {
         assertEquals("", queue.toString());
         queue.insert(5);
         assertEquals("5", queue.toString());
@@ -192,7 +153,7 @@ public abstract class QueueTest {
     }
 
     @Test
-    public void queueIterator() {
+    void queueIterator() {
         queue.insert(144);
         queue.insert(null);
         queue.insert("HP");
@@ -209,7 +170,7 @@ public abstract class QueueTest {
     }
 
     @Test
-    public void createEmptyQueue() {
+    void createEmptyQueue() {
         queue.insert(5);
         queue.enqueue("hi");
         Queue newQueue = queue.createEmptyQueue();
@@ -218,21 +179,21 @@ public abstract class QueueTest {
     }
 
     @Test
-    public void queueFilter() {
+    void queueFilter() {
         for (int i = 0; i < 100; i++) {
             queue.enqueue(i);
         }
         Queue q = queue.filter(o -> {
-           if (o instanceof Integer k) {
-               return k > 10 && k < 20;
-           }
-           return false;
+            if (o instanceof Integer k) {
+                return k > 10 && k < 20;
+            }
+            return false;
         });
         assertEquals(9, q.size());
     }
 
     @Test
-    public void queueFilterNull() {
+    void queueFilterNull() {
         Queue q = queue.filter(null);
         assertNull(q);
     }

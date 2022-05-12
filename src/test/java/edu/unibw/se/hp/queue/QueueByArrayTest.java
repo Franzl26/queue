@@ -1,8 +1,8 @@
 package edu.unibw.se.hp.queue;
 
-public class QueueByArrayTest extends QueueTest{
+class QueueByArrayTest extends QueueTest{
     @Override
-    public Queue createQueue() {
+    Queue createQueue() {
         return new QueueByArray();
     }
 }

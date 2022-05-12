@@ -154,18 +154,13 @@ abstract class QueueTest {
 
     @Test
     void queueIterator() {
-        queue.insert(144);
-        queue.insert(null);
-        queue.insert("HP");
-        queue.insert(-145);
-        queue.enqueue(4.5);
-        queue.enqueue(144);
-        queue.enqueue(4.5);
-        queue.enqueue(null);
+        Object[] arr = {144, null, "HP", -145, 4.5, 144, 4.5, null};
+        Arrays.stream(arr).forEach(o -> queue.insert(o));
         Iterator<Object> it = queue.iterator();
         for (int i = 0; it.hasNext(); i++) {
             Object o = it.next();
             assertEquals(o, queue.get(i));
+            assertEquals(arr[i], queue.get(i));
         }
     }
 

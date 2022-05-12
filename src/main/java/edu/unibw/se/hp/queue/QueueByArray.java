@@ -3,31 +3,31 @@ package edu.unibw.se.hp.queue;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class QueueByArray implements Queue {
-    private Object[] elements = new Object[16];
+public class QueueByArray<E> implements Queue<E> {
+    private E[] elements = (E[]) new Object[16];
     private int count = 0;
 
     @Override
-    public void enqueue(Object element) {
+    public void enqueue(E element) {
         if (size() == elements.length) {
-            Object[] temp = elements;
-            elements = new Object[2 * temp.length];
+            E[] temp = elements;
+            elements = (E[]) new Object[2 * temp.length];
             System.arraycopy(temp, 0, elements, 0, temp.length);
         }
         elements[count++] = element;
     }
 
     @Override
-    public Object dequeue() {
+    public E dequeue() {
         if (isEmpty()) throw new EmptyQueueException("Queue is empty!");
-        Object temp = elements[0];
+        E temp = elements[0];
         System.arraycopy(elements, 1, elements, 0, count - 1);
         elements[--count] = null;
         return temp;
     }
 
     @Override
-    public void remove(Object element) {
+    public void remove(E element) {
         int alt = 0;
         int cnt;
         int newcount = count;
@@ -47,23 +47,23 @@ public class QueueByArray implements Queue {
         return count;
     }
 
-    public Object get(int i) {
+    public E get(int i) {
         if (count == 0 || i < 0 || i > count) throw new QueueIndexOutOfBoundsException(i);
         return elements[i];
     }
 
     @Override
     public void clear() {
-        elements = new Object[16];
+        elements = (E[]) new Object[16];
         count = 0;
     }
 
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        Iterator<Object> it = iterator();
+        Iterator<E> it = iterator();
         while (it.hasNext()) {
-            Object o = it.next();
+            E o = it.next();
             if (o != null) s.append(o);
             else s.append("null");
             if (it.hasNext()) s.append(" <- ");
@@ -72,16 +72,16 @@ public class QueueByArray implements Queue {
     }
 
     @Override
-    public Iterator<Object> iterator() {
+    public Iterator<E> iterator() {
         return new ArrayIterator();
     }
 
     @Override
-    public Queue createEmptyQueue() {
-        return new QueueByArray();
+    public Queue<E> createEmptyQueue() {
+        return new QueueByArray<>();
     }
 
-    private class ArrayIterator implements Iterator<Object> {
+    private class ArrayIterator implements Iterator<E> {
         private int cnt = 0;
 
         @Override
@@ -90,7 +90,7 @@ public class QueueByArray implements Queue {
         }
 
         @Override
-        public Object next() {
+        public E next() {
             return elements[cnt++];
         }
     }

@@ -3,27 +3,27 @@ package edu.unibw.se.hp.queue;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class QueueByList implements Queue {
+public class QueueByList<E> implements Queue<E> {
     private int size = 0;
-    private ListElement head;
-    private ListElement tail;
+    private ListElement<E> head;
+    private ListElement<E> tail;
 
     @Override
-    public void enqueue(Object element) {
+    public void enqueue(E element) {
         if (isEmpty()) {
-            head = new ListElement(element, null);
+            head = new ListElement<>(element, null);
             tail = head;
         } else {
-            tail.next = new ListElement(element, null);
+            tail.next = new ListElement<>(element, null);
             tail = tail.next;
         }
         size++;
     }
 
     @Override
-    public Object dequeue() {
+    public E dequeue() {
         if (head == null) throw new EmptyQueueException("Queue is empty!");
-        Object temp = head.element;
+        E temp = head.element;
         head = head.next;
         if (size == 1) tail = null;
         size--;
@@ -31,9 +31,9 @@ public class QueueByList implements Queue {
     }
 
     @Override
-    public void remove(Object element) {
-        ListElement newL = null;
-        ListElement temp = head;
+    public void remove(E element) {
+        ListElement<E> newL = null;
+        ListElement<E> temp = head;
         head = null;
         size = 0;
         while (temp != null) {
@@ -69,9 +69,9 @@ public class QueueByList implements Queue {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        Iterator<Object> it = iterator();
+        Iterator<E> it = iterator();
         while (it.hasNext()) {
-            Object o = it.next();
+            E o = it.next();
             if (o != null) s.append(o);
             else s.append("null");
             if (it.hasNext()) s.append(" <- ");
@@ -80,17 +80,17 @@ public class QueueByList implements Queue {
     }
 
     @Override
-    public Iterator<Object> iterator() {
+    public Iterator<E> iterator() {
         return new ListIterator();
     }
 
     @Override
-    public Queue createEmptyQueue() {
-        return new QueueByList();
+    public Queue<E> createEmptyQueue() {
+        return new QueueByList<>();
     }
 
-    private class ListIterator implements Iterator<Object> {
-        private ListElement iter = head;
+    private class ListIterator implements Iterator<E> {
+        private ListElement<E> iter =  head;
 
         @Override
         public boolean hasNext() {
@@ -98,18 +98,18 @@ public class QueueByList implements Queue {
         }
 
         @Override
-        public Object next() {
-            Object temp = iter.element;
+        public E next() {
+            E temp = iter.element;
             iter = iter.next;
             return temp;
         }
     }
 
-    private static class ListElement {
-        private final Object element;
-        private ListElement next;
+    private static class ListElement<E> {
+        private final E element;
+        private ListElement<E> next;
 
-        private ListElement(Object element, ListElement next) {
+        private ListElement(E element, ListElement<E> next) {
             this.element = element;
             this.next = next;
         }

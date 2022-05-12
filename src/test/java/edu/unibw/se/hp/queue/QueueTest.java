@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("QueueTest")
 abstract class QueueTest {
-    private Queue queue = null;
+    private Queue<Object> queue = null;
 
-    abstract Queue createQueue();
+    abstract Queue<Object> createQueue();
 
     @BeforeEach
     void beforeEachTest() {
@@ -76,10 +76,6 @@ abstract class QueueTest {
 
     @Test
     void queueClear() {
-        /*queue.insert("hi");
-        queue.insert(null);
-        queue.insert(45);*/
-
         Object[] arr = {144, null, "HP", -145, 4.5};
         Arrays.stream(arr).forEach(o -> queue.insert(o));
 
@@ -168,7 +164,7 @@ abstract class QueueTest {
     void createEmptyQueue() {
         queue.insert(5);
         queue.enqueue("hi");
-        Queue newQueue = queue.createEmptyQueue();
+        Queue<Object> newQueue = queue.createEmptyQueue();
         assertEquals(0, newQueue.size());
         assertTrue(newQueue.isEmpty());
     }
@@ -178,7 +174,7 @@ abstract class QueueTest {
         for (int i = 0; i < 100; i++) {
             queue.enqueue(i);
         }
-        Queue q = queue.filter(o -> {
+        Queue<Object> q = queue.filter(o -> {
             if (o instanceof Integer k) {
                 return k > 10 && k < 20;
             }
@@ -189,7 +185,7 @@ abstract class QueueTest {
 
     @Test
     void queueFilterNull() {
-        Queue q = queue.filter(null);
+        Queue<Object> q = queue.filter(null);
         assertNull(q);
     }
 }

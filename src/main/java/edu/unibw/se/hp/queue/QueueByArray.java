@@ -4,10 +4,12 @@ import java.util.Iterator;
 import java.util.Objects;
 
 public class QueueByArray<E> implements Queue<E> {
+    @SuppressWarnings("unchecked")
     private E[] elements = (E[]) new Object[16];
     private int count = 0;
 
     @Override
+    @SuppressWarnings("unchecked")
     public void enqueue(E element) {
         if (size() == elements.length) {
             E[] temp = elements;
@@ -53,6 +55,7 @@ public class QueueByArray<E> implements Queue<E> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void clear() {
         elements = (E[]) new Object[16];
         count = 0;

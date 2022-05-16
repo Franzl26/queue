@@ -3,7 +3,7 @@ package edu.unibw.se.hp.queue;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class QueueByList<E> implements Queue<E> {
+public class QueueByList<E> implements Queue<E>, Iterable<E> {
     private int size = 0;
     private ListElement<E> head;
     private ListElement<E> tail;

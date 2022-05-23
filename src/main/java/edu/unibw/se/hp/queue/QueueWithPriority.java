@@ -8,7 +8,8 @@ public class QueueWithPriority<E> implements Queue<E> {
 
     @Override
     public void enqueue(E element) {
-        if (!queue.contains(element)) queue.offer(element);
+        //if (!queue.contains(element))
+            queue.offer(element);
     }
 
     @Override
@@ -19,7 +20,8 @@ public class QueueWithPriority<E> implements Queue<E> {
 
     @Override
     public void remove(E element) {
-        queue.remove(element);
+        while (queue.contains(element))
+            queue.remove(element);
     }
 
     @Override

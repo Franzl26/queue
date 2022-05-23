@@ -32,16 +32,16 @@ public class QueueByArray<E> implements Queue<E> {
     public void remove(E element) {
         int alt = 0;
         int cnt;
-        int newcount = count;
+        int newCount = count;
         for (cnt = 0; cnt < count; cnt++) {
             if (Objects.equals(elements[cnt], element)) {
-                newcount--;
+                newCount--;
                 continue;
             }
             elements[alt++] = elements[cnt];
         }
         for (; alt < count; alt++) elements[alt] = null;
-        count = newcount;
+        count = newCount;
     }
 
     @Override
@@ -58,6 +58,7 @@ public class QueueByArray<E> implements Queue<E> {
     @SuppressWarnings("unchecked")
     public void clear() {
         elements = (E[]) new Object[16];
+        // Arrays.setAll(elements, (i) -> null);
         count = 0;
     }
 
